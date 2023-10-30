@@ -7,6 +7,8 @@ import com.example.erp.repository.Empresas;
 import com.example.erp.repository.RamoAtividades;
 import com.example.erp.service.CadastroEmpresaService;
 import com.example.erp.util.FacesMessages;
+import org.primefaces.PrimeFaces;
+import org.primefaces.context.PrimeRequestContext;
 
 
 import javax.faces.convert.Converter;
@@ -14,6 +16,8 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Named
@@ -46,14 +50,22 @@ public class GestaoEmpresasBean implements Serializable {
         empresa = new Empresa();
     }
 
+    public void prepararEdicao() {
+        ramoAtividadeConverter = new RamoAtividadeConverter(Collections.singletonList(empresa.getRamoAtividade()));
+    }
+
     public void salvar() {
         cadastroEmpresaService.salvar(empresa);
+        messages.info("Empresa salva com sucesso!");
+        atualizarRegistros();
+        PrimeFaces.current().ajax().update(Arrays.asList("frm:empresasDataTable", "frm:messages"));
+    }
 
-        if (jaHouvePesquisa()) {
-            pesquisar();
-        }
-
-        messages.info("Empresa cadastrada com sucesso!");
+    public void excluir() {
+        cadastroEmpresaService.excluir(empresa);
+        empresa = null;
+        atualizarRegistros();
+        messages.info("Empresa excluida com sucesso!");
     }
 
     public void pesquisar() {
@@ -76,6 +88,14 @@ public class GestaoEmpresasBean implements Serializable {
 
     private boolean jaHouvePesquisa() {
         return termoPesquisa != null &&!"".equals(termoPesquisa);
+    }
+
+    public void atualizarRegistros() {
+        if (jaHouvePesquisa()) {
+            pesquisar();
+        } else {
+            todasEmpresas();
+        }
     }
 
     public List<Empresa> getListaEmpresas() {
@@ -104,6 +124,10 @@ public class GestaoEmpresasBean implements Serializable {
 
     public void setEmpresa(Empresa empresa) {
         this.empresa = empresa;
+    }
+
+    public boolean isEmpresaSelecionada() {
+        return empresa != null && empresa.getId() != null;
     }
 
 }
