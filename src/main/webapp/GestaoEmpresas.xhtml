@@ -55,14 +55,20 @@
                                              style="margin-left: 5px; margin-right: 5px;"
                                              disabled="#{not gestaoEmpresasBean.empresaSelecionada}"
                                              actionListener="#{gestaoEmpresasBean.excluir}"
-                                             update="messages empresasDataTable toolbar" process="@this"/>
+                                             update="messages empresasDataTable toolbar" process="@this">
+                                <p:confirm icon="ui-icon-alert" header="Confirmação de exclusão"
+                                           message="Tem certeza que deseja remover a empresa?"/>
+                            </p:commandButton>
                         </p:toolbarGroup>
 
                         <i class="pi pi-bars px-2"/>
 
                         <p:toolbarGroup>
                             <p:commandButton title="Exportar para o Excel" icon="fa fa-file-excel-o"
-                                             style="margin-left: 10px; margin-right: 10px;"/>
+                                             style="margin-left: 10px; margin-right: 10px;">
+                                <p:dataExporter target="empresasDataTable" type="xls"
+                                                fileName="Empresas"></p:dataExporter>
+                            </p:commandButton>
                         </p:toolbarGroup>
                     </f:facet>
                 </p:toolbar>

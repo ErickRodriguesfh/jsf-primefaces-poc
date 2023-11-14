@@ -11,6 +11,8 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "empresa")
@@ -53,6 +55,9 @@ public class Empresa implements Serializable {
 
     @Column(precision = 10, scale = 2)
     private BigDecimal faturamento;
+
+    @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Contrato> contratos;
 
     public BigDecimal getFaturamento() {
         return faturamento;
@@ -116,6 +121,14 @@ public class Empresa implements Serializable {
 
     public void setTipo(TipoEmpresa tipo) {
         this.tipo = tipo;
+    }
+
+    public Set<Contrato> getContratos() {
+        return contratos;
+    }
+
+    public void setContratos(Set<Contrato> contratos) {
+        this.contratos = contratos;
     }
 
     @Override

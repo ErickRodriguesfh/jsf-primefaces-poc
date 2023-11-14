@@ -7,6 +7,7 @@
 
         <class>com.example.erp.model.Empresa</class>
         <class>com.example.erp.model.RamoAtividade</class>
+        <class>com.example.erp.model.Contrato</class>
 
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/cursojsfprimefaces" />
